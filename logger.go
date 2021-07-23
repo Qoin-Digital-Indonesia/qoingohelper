@@ -15,6 +15,7 @@ const (
 	colorWhite  string = "\033[37m"
 )
 
+//this is for logger info level
 func LoggerInfo(message string) {
 	fmt.Println(colorBlue)
 	log.Println(colorBlue, "========== Start Info Message ==========")
@@ -23,6 +24,7 @@ func LoggerInfo(message string) {
 	fmt.Println(colorBlue)
 }
 
+//this is for logger warning level
 func LoggerWarning(message string) {
 	fmt.Println(colorYellow)
 	log.Println(colorYellow, "========== Start Info Message ==========")
@@ -31,6 +33,7 @@ func LoggerWarning(message string) {
 	fmt.Println(colorYellow)
 }
 
+//this is for logger success level
 func LoggerSuccess(message string) {
 	fmt.Println(colorGreen)
 	log.Println(colorGreen, "========== Start Info Message ==========")
@@ -39,6 +42,7 @@ func LoggerSuccess(message string) {
 	fmt.Println(colorGreen)
 }
 
+//this is for logger error level
 func LoggerError(err error) {
 	if err != nil {
 		fmt.Println(colorRed)
@@ -49,6 +53,7 @@ func LoggerError(err error) {
 	}
 }
 
+//this is for logger debug level
 func LoggerDebug(msg string) {
 	fmt.Println(colorPurple)
 	log.Println(colorPurple, "========== Start Error Message ==========")
