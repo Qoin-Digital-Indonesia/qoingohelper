@@ -16,43 +16,43 @@ const (
 )
 
 func LoggerInfo(message string) {
-	fmt.Println()
+	fmt.Println(colorBlue)
 	log.Println(colorBlue, "========== Start Info Message ==========")
 	log.Println(colorBlue, "INFO => "+message+".")
 	log.Println(colorBlue, "========== End Of Info Message ==========")
-	fmt.Println()
+	fmt.Println(colorBlue)
 }
 
 func LoggerWarning(message string) {
-	fmt.Println()
+	fmt.Println(colorYellow)
 	log.Println(colorYellow, "========== Start Info Message ==========")
 	log.Println(colorYellow, "INFO => "+message+".")
 	log.Println(colorYellow, "========== End Of Info Message ==========")
-	fmt.Println()
+	fmt.Println(colorYellow)
 }
 
 func LoggerSuccess(message string) {
-	fmt.Println()
+	fmt.Println(colorGreen)
 	log.Println(colorGreen, "========== Start Info Message ==========")
 	log.Println(colorGreen, "INFO => "+message+".")
 	log.Println(colorGreen, "========== End Of Info Message ==========")
-	fmt.Println()
+	fmt.Println(colorGreen)
 }
 
 func LoggerError(err error) {
 	if err != nil {
-		fmt.Println()
+		fmt.Println(colorRed)
 		log.Println(colorRed, "========== Start Error Message ==========")
 		log.Println(colorRed, "ERROR => "+err.Error()+".")
 		log.Println(colorRed, "========== End Of Error Message ==========")
-		fmt.Println()
+		fmt.Println(colorRed)
 	}
 }
 
 func LoggerDebug(msg string) {
-	fmt.Println()
+	fmt.Println(colorPurple)
 	log.Println(colorPurple, "========== Start Error Message ==========")
 	log.Println(colorPurple, "ERROR => "+msg+".")
 	log.Println(colorPurple, "========== End Of Error Message ==========")
-	fmt.Println()
+	fmt.Println(colorPurple)
 }
