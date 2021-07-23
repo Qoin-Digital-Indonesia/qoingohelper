@@ -1,4 +1,4 @@
-module qoinhelper
+module github.com/Qoin-Digital-Indonesia/qoin-go-helper
 
 go 1.16
 

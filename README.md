@@ -16,7 +16,7 @@ git clone git@bitbucket.org:loyaltoid/go-skeleton-manager.git
 ```
 ### via go modules
 ```git
-go mod install github.com/Qoin-Digital-Indonesia/qoin-go-helper.git
+go mod install github.com/Qoin-Digital-Indonesia/qoin-go-helper
 ```
 
 # Usage
