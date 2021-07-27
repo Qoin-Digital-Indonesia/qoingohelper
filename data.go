@@ -1,4 +1,4 @@
-package qoinhelper
+package qoingohelper
 
 import (
 	"crypto/rand"

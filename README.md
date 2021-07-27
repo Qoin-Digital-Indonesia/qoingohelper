@@ -1,25 +1,55 @@
-# qoin-go-helper
-Qoin Golang Helper
 
-# Go Helper
+# Qoin Go Helper
+
 
 [![logo](https://avatars.githubusercontent.com/u/72009988?s=200&v=4)](https://www.qoin.id/)
 
+
 # Introduction
-This repo for Helper services.
+This repo for Helper Golang services.
 
-# Installation
+# ⚙️ Installation
 
-### via SSH
-```git
-git clone git@bitbucket.org:loyaltoid/go-skeleton-manager.git
-```
 ### via go modules
 ```git
-go mod install github.com/Qoin-Digital-Indonesia/qoin-go-helper
+go get github.com/Qoin-Digital-Indonesia/qoingohelper
 ```
 
-# Usage
-```shell
-qoinhelper.LoggerInfo("This is logger info")
+## 🎯 Features
+
+-   Logger [logger](https://github.com/Qoin-Digital-Indonesia/qoingohelper/blob/master/logger.go)
+-   Data [data](https://github.com/Qoin-Digital-Indonesia/qoingohelper/blob/master/data.go)
+-   Middleware [middleware](https://github.com/Qoin-Digital-Indonesia/qoingohelper/blob/master/middleware.go)
+
+# ⚡️ Usage
+## 📖 Logger
+```go
+import (
+     ...
+     github.com/Qoin-Digital-Indonesia/qoingohelper
+     ...
+)
+
+func main(){
+     ...
+      qoingohelper.LoggerInfo("This is info")
+	 qoingohelper.LoggerSuccess("This is success")
+	 qoingohelper.LoggerError(errors.New("this is info")) or qoingohelper.LoggerError(err)
+	 qoingohelper.LoggerWarning("This is warning")     ​...
+
+}
+
 ```
+
+
+###
+* Result
+
+```diff
+- logger error
++ logger warning
+! logger success
+# logger info
+```
+
+## 📖 Data
