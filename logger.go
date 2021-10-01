@@ -17,11 +17,11 @@ const (
 
 //this is for logger info level
 func LoggerInfo(message string) {
-	fmt.Println(colorBlue)
-	log.Println(colorBlue, "========== Start Info Message ==========")
-	log.Println(colorBlue, "INFO => "+message+".")
-	log.Println(colorBlue, "========== End Of Info Message ==========")
-	fmt.Println(colorBlue)
+	fmt.Println(colorCyan)
+	log.Println(colorCyan, "========== Start Info Message ==========")
+	log.Println(colorCyan, "INFO => "+message+".")
+	log.Println(colorCyan, "========== End Of Info Message ==========")
+	fmt.Println(colorCyan)
 }
 
 //this is for logger warning level
