@@ -141,6 +141,16 @@ func JsonEncode(data interface{}) string {
 	return string(val)
 }
 
+func JsonEncodeBeautify(data interface{}) string {
+	val, err := json.MarshalIndent(data, "", "    ")
+	if err != nil {
+		LoggerError(err)
+		return ""
+	}
+
+	return string(val)
+}
+
 func JsonDecode(data interface{}) (maps map[string]interface{}, err error) {
 	toMapping := make(map[string]interface{})
 	jsonString, err := json.Marshal(data)
