@@ -20,6 +20,8 @@ go get github.com/Qoin-Digital-Indonesia/qoingohelper
 -   Logger [logger](https://github.com/Qoin-Digital-Indonesia/qoingohelper/blob/master/logger.go)
 -   Data [data](https://github.com/Qoin-Digital-Indonesia/qoingohelper/blob/master/data.go)
 -   Middleware [middleware](https://github.com/Qoin-Digital-Indonesia/qoingohelper/blob/master/middleware.go)
+-   Response V1 snake_case
+-   Response V2 CamlCase
 
 # ⚡️ Usage
 ## 📖 Logger
