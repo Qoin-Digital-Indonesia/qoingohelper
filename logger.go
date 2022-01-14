@@ -16,30 +16,27 @@ const (
 )
 
 //this is for logger info level
-func LoggerInfo(message string) {
+func LoggerInfo(message interface{}) {
 	fmt.Println(colorCyan)
 	log.Println(colorCyan, "========== Start Info Message ==========")
-	log.Println(colorCyan, "INFO => "+message+".")
+	log.Println(colorCyan, "INFO => "+fmt.Sprint(message)+".")
 	log.Println(colorCyan, "========== End Of Info Message ==========")
-	fmt.Println(nil)
 }
 
 //this is for logger warning level
-func LoggerWarning(message string) {
+func LoggerWarning(message interface{}) {
 	fmt.Println(colorYellow)
 	log.Println(colorYellow, "========== Start Warning Message ==========")
-	log.Println(colorYellow, "INFO => "+message+".")
+	log.Println(colorYellow, "INFO => "+fmt.Sprint(message)+".")
 	log.Println(colorYellow, "========== End Of Info Message ==========")
-	fmt.Println(nil)
 }
 
 //this is for logger success level
-func LoggerSuccess(message string) {
+func LoggerSuccess(message interface{}) {
 	fmt.Println(colorGreen)
 	log.Println(colorGreen, "========== Start Success Message ==========")
-	log.Println(colorGreen, "INFO => "+message+".")
+	log.Println(colorGreen, "INFO => "+fmt.Sprint(message)+".")
 	log.Println(colorGreen, "========== End Of Info Message ==========")
-	fmt.Println(nil)
 }
 
 //this is for logger error level
@@ -49,15 +46,13 @@ func LoggerError(err error) {
 		log.Println(colorRed, "========== Start Error Message ==========")
 		log.Println(colorRed, "ERROR => "+err.Error()+".")
 		log.Println(colorRed, "========== End Of Error Message ==========")
-		fmt.Println(nil)
 	}
 }
 
 //this is for logger debug level
-func LoggerDebug(msg string) {
+func LoggerDebug(msg interface{}) {
 	fmt.Println(colorPurple)
 	log.Println(colorPurple, "========== Start Debug Message ==========")
-	log.Println(colorPurple, "ERROR => "+msg+".")
+	log.Println(colorPurple, "ERROR => "+fmt.Sprint(msg)+".")
 	log.Println(colorPurple, "========== End Of Error Message ==========")
-	fmt.Println(nil)
 }

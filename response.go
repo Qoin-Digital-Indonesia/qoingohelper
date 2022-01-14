@@ -15,6 +15,13 @@ type Response struct {
 	Data    interface{} `json:"data"`
 }
 
+type V2Response struct {
+	Code    int         `json:"StatusCode"`
+	Status  string      `json:"Status"`
+	Message interface{} `json:"Message"`
+	Data    interface{} `json:"Data"`
+}
+
 type JSONResponse struct {
 	Code    int         `json:"status_code"`
 	Status  string      `json:"status"`
@@ -22,6 +29,14 @@ type JSONResponse struct {
 	Data    interface{} `json:"data"`
 }
 
+type V2JSONResponse struct {
+	Code    int         `json:"StatusCode"`
+	Status  string      `json:"Status"`
+	Message interface{} `json:"Message"`
+	Data    interface{} `json:"Data"`
+}
+
+// V1 Version 1 snake_case
 func SuccessContext(message interface{}, data interface{}, c echo.Context) (err error) {
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"status_code": 200,
@@ -145,6 +160,136 @@ func RPCJSONResponse(status string, message interface{}, data interface{}) strin
 			responseStruct.Error(message, fmt.Sprintf("%v", data))
 		} else {
 			responseStruct.Error(message, data)
+		}
+	}
+
+	return JsonEncode(responseStruct)
+}
+
+// V2 Version 2 CamlCase
+func V2SuccessContext(message interface{}, data interface{}, c echo.Context) (err error) {
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"StatusCode": 200,
+		"Status":     "success",
+		"Message":    message,
+		"Data":       data,
+	})
+}
+
+func V2ErrorContext(message interface{}, c echo.Context) (err error) {
+	return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+		"StatusCode": 500,
+		"Status":     "failed",
+		"Message":    message,
+		"Data":       nil,
+	})
+}
+
+func V2ValidationContext(message interface{}, data interface{}, c echo.Context) (err error) {
+	return c.JSON(http.StatusBadRequest, map[string]interface{}{
+		"StatusCode": 400,
+		"Status":     "validation",
+		"Message":    message,
+		"Data":       data,
+	})
+}
+
+func V2TimeoutContext(message interface{}, c echo.Context) (err error) {
+	return c.JSON(http.StatusBadRequest, map[string]interface{}{
+		"StatusCode": 504,
+		"Status":     "timeout",
+		"Message":    message,
+		"Data":       nil,
+	})
+}
+
+func V2NotFoundContext(message interface{}, data interface{}, c echo.Context) (err error) {
+	return c.JSON(http.StatusNotFound, map[string]interface{}{
+		"StatusCode": 404,
+		"Status":     "not found",
+		"Message":    message,
+		"Data":       nil,
+	})
+}
+
+func V2ResponseContext(code int, message interface{}, data interface{}, c echo.Context) error {
+	if code == 200 { // Success
+		return SuccessContext(message, data, c)
+	} else if code == 400 { // Bad Request
+		return ValidationContext(message, data, c)
+	} else if code == 404 { // Notfound
+		return NotFoundContext(message, data, c)
+	} else if code == 504 { // Timeout
+		return TimeoutContext(message, c)
+	}
+	return ErrorContext(message, c) // Internal Server Error
+}
+
+func V2ValidationResp(message interface{}, data interface{}) map[string]interface{} {
+	return map[string]interface{}{
+		"Status":  "success",
+		"Message": message,
+		"Data":    data,
+	}
+}
+
+func V2Success(message string, data interface{}, c echo.Context) map[string]interface{} {
+	return map[string]interface{}{
+		"Status":  "success",
+		"Message": message,
+		"Data":    data,
+	}
+}
+
+func (response *V2Response) V2Success(code int, message string, data interface{}) {
+	response.Code = code
+	response.Status = "success"
+	response.Message = message
+	response.Data = data
+}
+
+func (response *V2Response) V2Error(code int, message string, data interface{}) {
+	response.Code = code
+	response.Status = "error"
+	response.Message = message
+	response.Data = data
+}
+
+func (response *V2JSONResponse) V2Success(message interface{}, data interface{}) {
+	response.Status = "success"
+	response.Message = message
+	response.Data = data
+	response.Code = http.StatusOK
+}
+
+func (response *V2JSONResponse) V2Error(message interface{}, data interface{}) {
+	response.Status = "error"
+	response.Message = message
+	response.Data = data
+	response.Code = http.StatusInternalServerError
+}
+
+func (response *V2JSONResponse) V2Validation(message interface{}, data interface{}) {
+	response.Status = "validation"
+	response.Message = message
+	response.Data = data
+	response.Code = http.StatusBadRequest
+}
+
+func V2RPCJSONResponse(status string, message interface{}, data interface{}) string {
+	var responseStruct = new(V2JSONResponse)
+
+	if status == "success" {
+		responseStruct.V2Success(message, data)
+	} else if status == "validation" {
+		responseStruct.V2Validation(message, data)
+	} else {
+		if data == nil {
+			responseStruct.V2Error(message, nil)
+		} else if fmt.Sprintf("%v", reflect.TypeOf(data).Kind()) == "ptr" {
+			responseStruct.V2Error(message, fmt.Sprintf("%v", data))
+		} else {
+			responseStruct.V2Error(message, data)
 		}
 	}
 
