@@ -214,15 +214,15 @@ func V2NotFoundContext(message interface{}, data interface{}, c echo.Context) (e
 
 func V2ResponseContext(code int, message interface{}, data interface{}, c echo.Context) error {
 	if code == 200 { // Success
-		return SuccessContext(message, data, c)
+		return V2SuccessContext(message, data, c)
 	} else if code == 400 { // Bad Request
-		return ValidationContext(message, data, c)
+		return V2ValidationContext(message, data, c)
 	} else if code == 404 { // Notfound
-		return NotFoundContext(message, data, c)
+		return V2NotFoundContext(message, data, c)
 	} else if code == 504 { // Timeout
-		return TimeoutContext(message, c)
+		return V2TimeoutContext(message, c)
 	}
-	return ErrorContext(message, c) // Internal Server Error
+	return V2ErrorContext(message, c) // Internal Server Error
 }
 
 func V2ValidationResp(message interface{}, data interface{}) map[string]interface{} {
