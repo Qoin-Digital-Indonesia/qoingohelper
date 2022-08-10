@@ -42,6 +42,50 @@ func main(){
 }
 
 ```
+## 📖 Logger Sentry
+```go
+import (
+     ...
+     github.com/Qoin-Digital-Indonesia/qoingohelper
+     ...
+)
+
+func main(){
+     ...
+      qoingohelper.InitSentry("this is url sentry", "environment (develop, staging , production)", "tags release (1.0.0 , 1.0.12)", debug (true,false))
+     ...
+
+     ...
+     // Send Error
+     if err != nil {
+		qoingohelper.SendSentryError(err, "saas-be-research-manager", "User", "divide")
+          // 1. Error
+          // 2. Service
+          // 3. Module
+          // 4. Function
+	}
+     ...
+
+     // Send Message
+     ...
+     qoingohelper.SendSentryMessage("this is sample message", "saas-be-research-manager", "User", "divide")
+          // 1. Message
+          // 2. Service
+          // 3. Module
+          // 4. Function
+     ...
+
+     // Send Event
+     ...
+     qoingohelper.SendSentryEvent(*sentry.Event)
+          // 1. Sentry Event
+          // 2. Service
+          // 3. Module
+          // 4. Function
+     ...
+}
+
+```
 
 
 ###
