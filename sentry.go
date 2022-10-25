@@ -2,7 +2,6 @@ package qoingohelper
 
 import (
 	"log"
-	"time"
 
 	"github.com/getsentry/sentry-go"
 )
@@ -18,27 +17,35 @@ type SentryData struct {
 
 var Sentries *SentryData
 
+var SentryClient *sentry.Client
+
 func NewSentryData() *SentryData {
 	return new(SentryData)
 }
 
-func InitSentry(Dsn, Environment, Release string, Debug bool) {
-	err := sentry.Init(sentry.ClientOptions{
+func InitSentry(Dsn, Environment, Release string, Debug bool) *sentry.Client {
+
+	client, err := sentry.NewClient(sentry.ClientOptions{
 		Dsn:              Dsn,
 		Environment:      Environment,
 		Release:          Release,
 		Debug:            Debug,
-		AttachStacktrace: true,
+		AttachStacktrace: false,
 		TracesSampleRate: 1.0,
 	})
+
 	if err != nil {
 		log.Fatalf("sentry.Init: %s", err)
 	}
-	defer sentry.Flush(10 * time.Second)
+
+	return client
+
 }
 
 func SendSentryMessage(message string, service, module, function string) {
-	sentry.WithScope(func(scope *sentry.Scope) {
+
+	hub := sentry.NewHub(SentryClient, sentry.NewScope())
+	hub.WithScope(func(scope *sentry.Scope) {
 		scope.SetLevel(sentry.LevelError)
 		scope.AddBreadcrumb(&sentry.Breadcrumb{
 			Type:     "Info",
@@ -50,12 +57,14 @@ func SendSentryMessage(message string, service, module, function string) {
 				"Function": function,
 			},
 		}, 5)
-		sentry.CaptureMessage(message)
+		hub.CaptureMessage(message)
 	})
 }
 
 func SendSentryError(err error, service, module, function string) {
-	sentry.WithScope(func(scope *sentry.Scope) {
+
+	hub := sentry.NewHub(SentryClient, sentry.NewScope())
+	hub.WithScope(func(scope *sentry.Scope) {
 		scope.SetLevel(sentry.LevelError)
 		scope.AddBreadcrumb(&sentry.Breadcrumb{
 			Type:     "Info",
@@ -67,12 +76,13 @@ func SendSentryError(err error, service, module, function string) {
 				"Function": function,
 			},
 		}, 5)
-		sentry.CaptureException(err)
+		hub.CaptureException(err)
 	})
 }
 
 func SendSentryEvent(event *sentry.Event, service, module, function string) {
-	sentry.WithScope(func(scope *sentry.Scope) {
+	hub := sentry.NewHub(SentryClient, sentry.NewScope())
+	hub.WithScope(func(scope *sentry.Scope) {
 		scope.SetLevel(sentry.LevelInfo)
 		scope.AddBreadcrumb(&sentry.Breadcrumb{
 			Type:     "Info",
@@ -84,6 +94,6 @@ func SendSentryEvent(event *sentry.Event, service, module, function string) {
 				"Function": function,
 			},
 		}, 5)
-		sentry.CaptureEvent(event)
+		hub.CaptureEvent(event)
 	})
 }
