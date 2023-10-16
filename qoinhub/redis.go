@@ -10,12 +10,12 @@ import (
 	redis "github.com/go-redis/redis/v8"
 )
 
-var redisPoolClient *redis.Client
+var RedisPoolClient *redis.Client
 
 func GetRedisClient(redisHost, redisPort, redisPassword string, redisDb int) (*redis.Client, error) {
 
 	ctx := context.Background()
-	redisPoolClient = redis.NewClient(&redis.Options{
+	RedisPoolClient = redis.NewClient(&redis.Options{
 		Addr:       redisHost + ":" + redisPort,
 		Password:   redisPassword,
 		DB:         redisDb,
@@ -24,7 +24,7 @@ func GetRedisClient(redisHost, redisPort, redisPassword string, redisDb int) (*r
 		MaxConnAge: 5 * time.Minute,
 	})
 
-	res, err := redisPoolClient.Ping(ctx).Result()
+	res, err := RedisPoolClient.Ping(ctx).Result()
 	if err != nil {
 		LoggerErrorHub(err)
 		return nil, err
@@ -33,12 +33,12 @@ func GetRedisClient(redisHost, redisPort, redisPassword string, redisDb int) (*r
 	log.Println("open redis pool connection successfully")
 	log.Println(res)
 
-	return redisPoolClient, nil
+	return RedisPoolClient, nil
 }
 
 func StoreRedis(id string, data interface{}, duration time.Duration) (err error) {
 
-	client := redisPoolClient
+	client := RedisPoolClient
 	_, err = client.Ping(client.Context()).Result()
 	if err != nil {
 		LoggerErrorHub("error redis ping : " + err.Error())
@@ -61,7 +61,7 @@ func StoreRedis(id string, data interface{}, duration time.Duration) (err error)
 
 func GetRedis(id string) (result string, err error) {
 
-	client := redisPoolClient
+	client := RedisPoolClient
 	_, err = client.Ping(client.Context()).Result()
 	if err != nil {
 		LoggerErrorHub("error redis ping : " + err.Error())
@@ -83,7 +83,7 @@ func GetRedis(id string) (result string, err error) {
 
 func DeleteRedis(id string) (err error) {
 
-	client := redisPoolClient
+	client := RedisPoolClient
 	_, err = client.Ping(client.Context()).Result()
 	if err != nil {
 		LoggerErrorHub("error redis ping : " + err.Error())
