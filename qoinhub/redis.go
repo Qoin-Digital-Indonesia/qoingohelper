@@ -4,9 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"log"
-	"os"
 
-	"strconv"
 	"time"
 
 	redis "github.com/go-redis/redis/v8"
@@ -14,22 +12,16 @@ import (
 
 var redisPoolClient *redis.Client
 
-func GetRedisClient() (*redis.Client, error) {
-
-	redisDb, err := strconv.Atoi(os.Getenv("REDIS_DB"))
-	if err != nil {
-		return nil, err
-	}
+func GetRedisClient(redisHost, redisPort, redisPassword string, redisDb int) (*redis.Client, error) {
 
 	ctx := context.Background()
 	redisPoolClient = redis.NewClient(&redis.Options{
-		Addr:         os.Getenv("REDIS_HOST") + ":" + os.Getenv("REDIS_PORT"),
-		Password:     os.Getenv("REDIS_PWD"),
-		DB:           redisDb,
-		MaxRetries:   3,
-		PoolSize:     50,
-		MaxConnAge:   5 * time.Minute,
-		MinIdleConns: 3,
+		Addr:       redisHost + ":" + redisPort,
+		Password:   redisPassword,
+		DB:         redisDb,
+		MaxRetries: 3,
+		PoolSize:   50,
+		MaxConnAge: 5 * time.Minute,
 	})
 
 	res, err := redisPoolClient.Ping(ctx).Result()
@@ -38,6 +30,7 @@ func GetRedisClient() (*redis.Client, error) {
 		return nil, err
 	}
 
+	log.Println("open redis pool connection successfully")
 	log.Println(res)
 
 	return redisPoolClient, nil
