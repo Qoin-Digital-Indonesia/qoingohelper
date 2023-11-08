@@ -46,7 +46,7 @@ func (r *ResponseApi) Success(message string, data interface{}) {
 func LoggerErrorHub(err interface{}) {
 	log.Println("==========================")
 	log.Println("")
-	log.Println(JSONEncode(err))
+	log.Println(err)
 	log.Println("")
 	log.Println("==========================")
 }

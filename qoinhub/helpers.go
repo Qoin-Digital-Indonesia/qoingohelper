@@ -24,15 +24,10 @@ func JsonMinify(jsonB []byte) ([]byte, error) {
 	return b, nil
 }
 
-func JSONMarshalNoEsc(t interface{}) ([]byte, error) {
+func jsonMarshalNoEsc(t interface{}) ([]byte, error) {
 	buffer := &bytes.Buffer{}
 	encoder := json.NewEncoder(buffer)
 	encoder.SetEscapeHTML(false)
 	err := encoder.Encode(t)
 	return buffer.Bytes(), err
-}
-
-func JSONEncode(obj interface{}) string {
-	json, _ := json.MarshalIndent(obj, "", "  ")
-	return string(json)
 }
