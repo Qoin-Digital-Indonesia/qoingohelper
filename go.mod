@@ -3,6 +3,7 @@ module github.com/Qoin-Digital-Indonesia/qoingohelper
 go 1.16
 
 require (
+	github.com/Nerzal/gocloak/v13 v13.8.0
 	github.com/getsentry/sentry-go v0.13.0
 	github.com/go-playground/validator/v10 v10.7.0
 	github.com/go-redis/redis/v8 v8.11.5
