@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"reflect"
 
-	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v5"
 )
 
 type Response struct {
@@ -37,7 +37,7 @@ type V2JSONResponse struct {
 }
 
 // V1 Version 1 snake_case
-func SuccessContext(message interface{}, data interface{}, c echo.Context) (err error) {
+func SuccessContext(message interface{}, data interface{}, c *echo.Context) (err error) {
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"status_code": 200,
 		"status":      "success",
@@ -46,7 +46,7 @@ func SuccessContext(message interface{}, data interface{}, c echo.Context) (err 
 	})
 }
 
-func ErrorContext(message interface{}, c echo.Context) (err error) {
+func ErrorContext(message interface{}, c *echo.Context) (err error) {
 	return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 		"status_code": 500,
 		"status":      "failed",
@@ -55,7 +55,7 @@ func ErrorContext(message interface{}, c echo.Context) (err error) {
 	})
 }
 
-func ValidationContext(message interface{}, data interface{}, c echo.Context) (err error) {
+func ValidationContext(message interface{}, data interface{}, c *echo.Context) (err error) {
 	return c.JSON(http.StatusBadRequest, map[string]interface{}{
 		"status_code": 400,
 		"status":      "validation",
@@ -64,7 +64,7 @@ func ValidationContext(message interface{}, data interface{}, c echo.Context) (e
 	})
 }
 
-func TimeoutContext(message interface{}, c echo.Context) (err error) {
+func TimeoutContext(message interface{}, c *echo.Context) (err error) {
 	return c.JSON(http.StatusBadRequest, map[string]interface{}{
 		"status_code": 504,
 		"status":      "timeout",
@@ -73,7 +73,7 @@ func TimeoutContext(message interface{}, c echo.Context) (err error) {
 	})
 }
 
-func NotFoundContext(message interface{}, data interface{}, c echo.Context) (err error) {
+func NotFoundContext(message interface{}, data interface{}, c *echo.Context) (err error) {
 	return c.JSON(http.StatusNotFound, map[string]interface{}{
 		"status_code": 404,
 		"status":      "not found",
@@ -82,7 +82,7 @@ func NotFoundContext(message interface{}, data interface{}, c echo.Context) (err
 	})
 }
 
-func ResponseContext(code int, message interface{}, data interface{}, c echo.Context) error {
+func ResponseContext(code int, message interface{}, data interface{}, c *echo.Context) error {
 	if code == 200 { // Success
 		return SuccessContext(message, data, c)
 	} else if code == 400 { // Bad Request
@@ -103,7 +103,7 @@ func ValidationResp(message interface{}, data interface{}) map[string]interface{
 	}
 }
 
-func Success(message string, data interface{}, c echo.Context) map[string]interface{} {
+func Success(message string, data interface{}, c *echo.Context) map[string]interface{} {
 	return map[string]interface{}{
 		"status":  "success",
 		"message": message,
@@ -167,7 +167,7 @@ func RPCJSONResponse(status string, message interface{}, data interface{}) strin
 }
 
 // V2 Version 2 CamlCase
-func V2SuccessContext(message interface{}, data interface{}, c echo.Context) (err error) {
+func V2SuccessContext(message interface{}, data interface{}, c *echo.Context) (err error) {
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"StatusCode": 200,
 		"Status":     "success",
@@ -176,7 +176,7 @@ func V2SuccessContext(message interface{}, data interface{}, c echo.Context) (er
 	})
 }
 
-func V2ErrorContext(message interface{}, c echo.Context) (err error) {
+func V2ErrorContext(message interface{}, c *echo.Context) (err error) {
 	return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 		"StatusCode": 500,
 		"Status":     "failed",
@@ -185,7 +185,7 @@ func V2ErrorContext(message interface{}, c echo.Context) (err error) {
 	})
 }
 
-func V2ValidationContext(message interface{}, data interface{}, c echo.Context) (err error) {
+func V2ValidationContext(message interface{}, data interface{}, c *echo.Context) (err error) {
 	return c.JSON(http.StatusBadRequest, map[string]interface{}{
 		"StatusCode": 400,
 		"Status":     "validation",
@@ -194,7 +194,7 @@ func V2ValidationContext(message interface{}, data interface{}, c echo.Context) 
 	})
 }
 
-func V2TimeoutContext(message interface{}, c echo.Context) (err error) {
+func V2TimeoutContext(message interface{}, c *echo.Context) (err error) {
 	return c.JSON(http.StatusBadRequest, map[string]interface{}{
 		"StatusCode": 504,
 		"Status":     "timeout",
@@ -203,7 +203,7 @@ func V2TimeoutContext(message interface{}, c echo.Context) (err error) {
 	})
 }
 
-func V2NotFoundContext(message interface{}, data interface{}, c echo.Context) (err error) {
+func V2NotFoundContext(message interface{}, data interface{}, c *echo.Context) (err error) {
 	return c.JSON(http.StatusNotFound, map[string]interface{}{
 		"StatusCode": 404,
 		"Status":     "not found",
@@ -212,7 +212,7 @@ func V2NotFoundContext(message interface{}, data interface{}, c echo.Context) (e
 	})
 }
 
-func V2ResponseContext(code int, message interface{}, data interface{}, c echo.Context) error {
+func V2ResponseContext(code int, message interface{}, data interface{}, c *echo.Context) error {
 	if code == 200 { // Success
 		return V2SuccessContext(message, data, c)
 	} else if code == 400 { // Bad Request
@@ -233,7 +233,7 @@ func V2ValidationResp(message interface{}, data interface{}) map[string]interfac
 	}
 }
 
-func V2Success(message string, data interface{}, c echo.Context) map[string]interface{} {
+func V2Success(message string, data interface{}, c *echo.Context) map[string]interface{} {
 	return map[string]interface{}{
 		"Status":  "success",
 		"Message": message,

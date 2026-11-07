@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/go-playground/validator/v10"
-	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v5"
 )
 
 var Validates *validator.Validate
@@ -56,7 +56,7 @@ func DateNil(dt interface{}) interface{} {
 	}
 }
 
-func Validate(c echo.Context, i interface{}) (interface{}, error) {
+func Validate(c *echo.Context, i interface{}) (interface{}, error) {
 	err := c.Validate(i)
 	if err != nil {
 		messageError := make(map[string]interface{})
@@ -168,7 +168,7 @@ func JsonDecode(data interface{}) (maps map[string]interface{}, err error) {
 	return toMapping, nil
 }
 
-func ClientIP(c echo.Context) string {
+func ClientIP(c *echo.Context) string {
 
 	IPAddress := c.Request().Header.Get("X-Real-Ip")
 	if IPAddress == "" {
