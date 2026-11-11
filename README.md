@@ -22,6 +22,7 @@ go get github.com/Qoin-Digital-Indonesia/qoingohelper
 -   Middleware [middleware](https://github.com/Qoin-Digital-Indonesia/qoingohelper/blob/master/middleware.go)
 -   Response V1 snake_case
 -   Response V2 CamlCase
+-   RSA PEM keys + RSA-SHA256 signatures [qoincrypto](qoincrypto/rsa.go) (replaces `github.com/supriadi-yusuf/adicrypto`)
 
 # ⚡️ Usage
 ## 📖 Logger
@@ -99,3 +100,25 @@ func main(){
 ```
 
 ## 📖 Data
+
+## 📖 qoincrypto (RSA PEM + RSA-SHA256 signature)
+Replaces `github.com/supriadi-yusuf/adicrypto`. Same signature format (RSASSA-PKCS1-v1_5 over SHA-256),
+so signatures made by either library verify with the other. Standard library only; never logs key material.
+
+```go
+import "github.com/Qoin-Digital-Indonesia/qoingohelper/v2/qoincrypto"
+
+priv, err := qoincrypto.ParsePrivateKeyPEM([]byte(os.Getenv("APP_PRIVATE_KEY"))) // PKCS#1 or PKCS#8
+pub, err := qoincrypto.ParsePublicKeyPEM([]byte(os.Getenv("APP_PUBLIC_KEY")))    // PKIX or PKCS#1
+if qoincrypto.PublicKeyBits(pub) < qoincrypto.RecommendedRSAKeyBits { /* warn: rotate to >= 2048 bits */ }
+
+sig, err := qoincrypto.SignSHA256(priv, payload)
+err = qoincrypto.VerifySHA256(pub, payload, sig) // nil = valid, qoincrypto.ErrInvalidSignature = mismatch
+```
+
+| adicrypto | qoincrypto |
+|---|---|
+| `PEMBytesToPrivateKey` | `ParsePrivateKeyPEM` (encrypted PEM rejected) |
+| `PEMBytesToPublicKey` | `ParsePublicKeyPEM` |
+| hasher + `CreateSignCreator(...).GenerateSignature` | `SignSHA256` (nil key → error, not panic) |
+| hasher + `CreateSignVerificator(...).VerifySignature` | `VerifySHA256` (mismatch → `ErrInvalidSignature`; nil/weak key → other error) |

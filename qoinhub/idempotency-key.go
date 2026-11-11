@@ -16,11 +16,11 @@ import (
 
 	jsoniter "github.com/json-iterator/go"
 
-	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v5"
 )
 
 func VerifIdemKey(next echo.HandlerFunc) echo.HandlerFunc {
-	return func(c echo.Context) error {
+	return func(c *echo.Context) error {
 		var response ResponseApi
 
 		// get headers
@@ -120,9 +120,9 @@ func VerifIdemKey(next echo.HandlerFunc) echo.HandlerFunc {
 }
 
 /*
-	read body payload and validate with the key
+read body payload and validate with the key
 */
-func ReadBody(c echo.Context, idem string) (map[string]interface{}, string, error) {
+func ReadBody(c *echo.Context, idem string) (map[string]interface{}, string, error) {
 	var request map[string]interface{}
 
 	// read body payload
@@ -161,7 +161,7 @@ func ReadBody(c echo.Context, idem string) (map[string]interface{}, string, erro
 }
 
 /*
-	generate md5 hash and compare the result with current key submitted
+generate md5 hash and compare the result with current key submitted
 */
 func VerifyMD5(idemKey string, request []byte) (string, error) {
 
